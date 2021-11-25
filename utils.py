@@ -27,7 +27,7 @@ def tokenize_sentence(sentence, min_tokens=1):
     Tokenize sentences into tokens (words)
 
     Args:
-        sentences: List of strings
+        sentence: List of strings
         min_tokens: Minimum number of tokens
 
     Returns:
@@ -36,6 +36,7 @@ def tokenize_sentence(sentence, min_tokens=1):
 
     sentence = sentence.lower()
     sentence = re.sub(r"[^a-zA-Z0-9.?! ]+", " ", sentence)
+    if not sentence.strip(): return []
     tokenized = nltk.word_tokenize(sentence)
     if len(tokenized) >= min_tokens: return tokenized
     return []
