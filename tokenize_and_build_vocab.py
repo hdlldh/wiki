@@ -2,11 +2,8 @@ import gzip as gz
 from utils import *
 from collections import Counter
 
-# input_file = 'split_wiki_20201201.dat.gz'
-# output_file = 'wiki_all_tokens.csv.gz'
-
-input_file = 'split_subject_lines.dat.gz'
-output_file = 'slt_all_tokens.csv.gz'
+input_file = 'split_wiki_20201201.dat.gz'
+output_file = 'wiki_all_tokens_20201201.csv.gz'
 
 count = 0
 vocab = Counter()
