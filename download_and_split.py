@@ -9,7 +9,6 @@ count = 0
 with gz.open(output, "w") as f:
     for example in ds:
         count += 1
-        if count == 10: break
         if count % 1000000 == 0: print("%s M articles have been processed." % (count // 1000000))
         data = example['text'].numpy().decode('UTF-8')
         sentences = split_to_sentences(data)
