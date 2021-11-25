@@ -50,9 +50,8 @@ def ascii_or_emoji_only(sentence):
 
 
 def remove_dynamic_symobl(sentence):
-    sentence = re.sub(r"^\{\{dynamic\}\}\W*", "", sentence)
-    sentence = re.sub(r"\W*\{\{dynamic\}\}$", "", sentence)
-    sentence = re.sub(r"\W*\{\{dynamic\}\}\W*", " ", sentence)
+    sentence = re.sub(r"^{{dynamic}}\W*|\W*{{dynamic}}$", "", sentence)
+    sentence = re.sub(r"\W*{{dynamic}}\W*", " ", sentence)
     return sentence
 
 
