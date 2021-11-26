@@ -95,7 +95,7 @@ def count_n_grams(data, n, start_token='<s>', end_token='<e>'):
     n_grams = {}
 
     for sentence in data:
-        sentence = [start_token] * (n-1) + sentence + [end_token] * (n-1)
+        sentence = [start_token] * n + sentence + [end_token] * n
         sentence = tuple(sentence)
 
         for i in range(len(sentence) - n + 1):  # complete this line

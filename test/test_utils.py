@@ -127,6 +127,7 @@ def test_count_n_grams():
              "end_token": "<e>"
          },
          "expected": {
+             ("<s>",): 2,
              ("i",): 1,
              ("like",): 2,
              ("a",): 2,
@@ -134,6 +135,7 @@ def test_count_n_grams():
              ("this",): 1,
              ("dog",): 1,
              ("is",): 1,
+             ("<e>",): 2,
          }
          },
         {"name": "default_check_2",
@@ -147,6 +149,7 @@ def test_count_n_grams():
              "end_token": "<e>"
          },
          "expected": {
+             ("<s>", "<s>"): 2,
              ("<s>", "i"): 1,
              ("i", "like"): 1,
              ("like", "a"): 2,
@@ -157,6 +160,7 @@ def test_count_n_grams():
              ("dog", "is"): 1,
              ("is", "like"): 1,
              ("cat", "<e>"): 2,
+             ("<e>", "<e>"): 2,
          }
          },
     ]
