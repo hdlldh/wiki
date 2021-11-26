@@ -92,14 +92,17 @@ def count_n_grams(data, n, start_token='<s>', end_token='<e>'):
         A dictionary that maps a tuple of n-words to its frequency
     """
 
-    n_grams = Counter()
+    n_grams = {}
 
     for sentence in data:
-        sentence = [start_token] * n + sentence + [end_token]
+        sentence = [start_token] * (n-1) + sentence + [end_token] * (n-1)
         sentence = tuple(sentence)
 
         for i in range(len(sentence) - n + 1):  # complete this line
             n_gram = sentence[i:i + n]
-            n_grams[n_gram] += 1
+            if n_gram in n_grams:
+                n_grams[n_gram] += 1
+            else:
+                n_grams[n_gram] = 1
 
     return n_grams
