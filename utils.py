@@ -106,3 +106,67 @@ def count_n_grams(data, n, start_token='<s>', end_token='<e>'):
                 n_grams[n_gram] = 1
 
     return n_grams
+
+
+def estimate_forward_probability(
+        word,
+        previous_n_gram,
+        n_gram_counts,
+        n_plus1_gram_counts,
+        vocabulary_size,
+        k=1.0):
+    """
+    Estimate the probabilities of a next word using the n-gram counts with k-smoothing
+
+    Args:
+        word: next word
+        previous_n_gram: A sequence of words of length n
+        n_gram_counts: Dictionary of counts of n-grams
+        n_plus1_gram_counts: Dictionary of counts of (n+1)-grams
+        vocabulary_size: number of words in the vocabulary
+        k: positive constant, smoothing parameter
+
+    Returns:
+        A probability
+    """
+    previous_n_gram = tuple(previous_n_gram)
+    previous_n_gram_count = n_gram_counts.get(previous_n_gram, 0)
+    denominator = previous_n_gram_count + k * vocabulary_size
+    n_plus1_gram = previous_n_gram + (word,)
+    n_plus1_gram_count = n_plus1_gram_counts.get(n_plus1_gram, 0)
+    numerator = n_plus1_gram_count + k
+    probability = numerator / denominator
+
+    return probability
+
+
+def estimate_backward_probability(
+        word,
+        next_n_gram,
+        n_gram_counts,
+        n_plus1_gram_counts,
+        vocabulary_size,
+        k=1.0):
+    """
+    Estimate the probabilities of a previous word using the n-gram counts with k-smoothing
+
+    Args:
+        word: previous word
+        next_n_gram: A sequence of words of length n
+        n_gram_counts: Dictionary of counts of n-grams
+        n_plus1_gram_counts: Dictionary of counts of (n+1)-grams
+        vocabulary_size: number of words in the vocabulary
+        k: positive constant, smoothing parameter
+
+    Returns:
+        A probability
+    """
+    next_n_gram = tuple(next_n_gram)
+    next_n_gram_count = n_gram_counts.get(next_n_gram, 0)
+    denominator = next_n_gram_count + k * vocabulary_size
+    n_plus1_gram = (word,) + next_n_gram
+    n_plus1_gram_count = n_plus1_gram_counts.get(n_plus1_gram, 0)
+    numerator = n_plus1_gram_count + k
+    probability = numerator / denominator
+
+    return probability

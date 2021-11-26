@@ -1,4 +1,5 @@
 from utils import *
+import numpy as np
 
 
 def test_ascii_or_emoji_only():
@@ -190,8 +191,140 @@ def test_count_n_grams():
         print("\033[91m", len(failed_cases), " Tests failed")
 
 
+def test_estimate_forward_probability():
+    successful_cases = 0
+    failed_cases = []
+
+    test_cases = [
+        {
+            "name": "default_check",
+            "input": {
+                "word": "cat",
+                "previous_n_gram": ("a",),
+                "n_gram_counts": {
+                    ("<s>",): 2,
+                    ("i",): 1,
+                    ("like",): 2,
+                    ("a",): 2,
+                    ("cat",): 2,
+                    ("<e>",): 2,
+                    ("this",): 1,
+                    ("dog",): 1,
+                    ("is",): 1,
+                },
+                "n_plus1_gram_counts": {
+                    ("<s>", "<s>"): 2,
+                    ("<s>", "i"): 1,
+                    ("i", "like"): 1,
+                    ("like", "a"): 2,
+                    ("a", "cat"): 2,
+                    ("cat", "<e>"): 2,
+                    ("<s>", "this"): 1,
+                    ("this", "dog"): 1,
+                    ("dog", "is"): 1,
+                    ("is", "like"): 1,
+                },
+                "vocabulary_size": 7,
+                "k": 1,
+            },
+            "expected": 0.3333333333333333,
+        },
+    ]
+
+    for test_case in test_cases:
+        result = estimate_forward_probability(**test_case["input"])
+
+        try:
+            assert np.isclose(result, test_case["expected"])
+            successful_cases += 1
+        except:
+            failed_cases.append(
+                {
+                    "name": test_case["name"],
+                    "expected": test_case["expected"],
+                    "got": result,
+                }
+            )
+            print(
+                f"Wrong output from estimate_forward_probability function. \n\t Name: {failed_cases[-1].get('name')}. \n\tExpected: {failed_cases[-1].get('expected')}.\n\tGot: {failed_cases[-1].get('got')}."
+            )
+
+    if len(failed_cases) == 0:
+        print("\033[92m All tests passed")
+    else:
+        print("\033[92m", successful_cases, " Tests passed")
+        print("\033[91m", len(failed_cases), " Tests failed")
+
+
+def test_estimate_backward_probability():
+    successful_cases = 0
+    failed_cases = []
+
+    test_cases = [
+        {
+            "name": "default_check",
+            "input": {
+                "word": "a",
+                "next_n_gram": ("cat",),
+                "n_gram_counts": {
+                    ("<s>",): 2,
+                    ("i",): 1,
+                    ("like",): 2,
+                    ("a",): 2,
+                    ("cat",): 2,
+                    ("<e>",): 2,
+                    ("this",): 1,
+                    ("dog",): 1,
+                    ("is",): 1,
+                },
+                "n_plus1_gram_counts": {
+                    ("<s>", "<s>"): 2,
+                    ("<s>", "i"): 1,
+                    ("i", "like"): 1,
+                    ("like", "a"): 2,
+                    ("a", "cat"): 2,
+                    ("cat", "<e>"): 2,
+                    ("<s>", "this"): 1,
+                    ("this", "dog"): 1,
+                    ("dog", "is"): 1,
+                    ("is", "like"): 1,
+                },
+                "vocabulary_size": 7,
+                "k": 1,
+            },
+            "expected": 0.3333333333333333,
+        },
+    ]
+
+    for test_case in test_cases:
+        result = estimate_backward_probability(**test_case["input"])
+
+        try:
+            assert np.isclose(result, test_case["expected"])
+            successful_cases += 1
+        except:
+            failed_cases.append(
+                {
+                    "name": test_case["name"],
+                    "expected": test_case["expected"],
+                    "got": result,
+                }
+            )
+            print(
+                f"Wrong output from estimate_backward_probability function. \n\t Name: {failed_cases[-1].get('name')}. \n\tExpected: {failed_cases[-1].get('expected')}.\n\tGot: {failed_cases[-1].get('got')}."
+            )
+
+    if len(failed_cases) == 0:
+        print("\033[92m All tests passed")
+    else:
+        print("\033[92m", successful_cases, " Tests passed")
+        print("\033[91m", len(failed_cases), " Tests failed")
+
+
 if __name__ == '__main__':
     test_ascii_or_emoji_only()
     test_tokenize_sentence()
     test_remove_dynamic_symbol()
     test_count_n_grams()
+    test_estimate_forward_probability()
+    test_estimate_backward_probability()
