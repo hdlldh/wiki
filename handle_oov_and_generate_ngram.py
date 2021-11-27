@@ -16,7 +16,7 @@ unknown_token = '<unk>'
 
 all_tokens = pd.read_csv(token_file)
 all_tokens = all_tokens[~all_tokens['token'].isnull()]
-all_tokens = all_tokens[~all_tokens['token'].isdigit()]
+all_tokens = all_tokens[~all_tokens['token'].str.isdigit()]
 vocab_size = 60000
 vocab_file = f"wiki_vocab_{vocab_size}_{date_str}.csv.gz"
 vocab_data = all_tokens.head(vocab_size)
