@@ -6,7 +6,7 @@ from collections import Counter
 date_str = "20201201"
 token_file = f"wiki_all_tokens_{date_str}.csv.gz"
 subject_file = f"wiki_sentences_{date_str}.dat.gz"
-unigram_file = f"wiki_unigram_{date_str}.csv.gz"
+# unigram_file = f"wiki_unigram_{date_str}.csv.gz"
 bigram_file = f"wiki_bigram_{date_str}.csv.gz"
 trigram_file = f"wiki_trigram_{date_str}.csv.gz"
 
@@ -16,6 +16,7 @@ unknown_token = '<unk>'
 
 all_tokens = pd.read_csv(token_file)
 all_tokens = all_tokens[~all_tokens['token'].isnull()]
+all_tokens = all_tokens[~all_tokens['token'].isdigit()]
 vocab_size = 60000
 vocab_file = f"wiki_vocab_{vocab_size}_{date_str}.csv.gz"
 vocab_data = all_tokens.head(vocab_size)
