@@ -16,13 +16,16 @@ unknown_token = '<unk>'
 
 all_tokens = pd.read_csv(token_file)
 all_tokens = all_tokens[~all_tokens['token'].isnull()]
-min_freq = 10
-vocab = set(all_tokens[all_tokens['count'] >= min_freq]['token'])
+vocab_size = 60000
+vocab_file = f"wiki_vocab_{vocab_size}_{date_str}.csv.gz"
+vocab_data = all_tokens.head(vocab_size)
+vocab = set(vocab_data['token'])
+vocab_data.to_csv(vocab_file, compression='gzip', index=False)
+print(f"vocab list has {vocab_size} tokens!")
 
-print(len(vocab))
 
 count = 0
-unigram_counter = Counter()
+# unigram_counter = Counter()
 bigram_counter = Counter()
 trigram_counter = Counter()
 
@@ -32,15 +35,15 @@ with gz.open(subject_file) as f:
         if count % 1000000 == 0: print("%s M sentences have been processed." % (count // 1000000))
         tokenized_sentence = tokenize_sentence(line.decode('UTF-8').strip())
         replaced_tokenized_sentence = replace_oov_words_by_unk(tokenized_sentence, vocab, unknown_token)
-        unigram_counter += Counter(count_n_grams([replaced_tokenized_sentence], 1, start_token, end_token))
+        # unigram_counter += Counter(count_n_grams([replaced_tokenized_sentence], 1, start_token, end_token))
         bigram_counter += Counter(count_n_grams([replaced_tokenized_sentence], 2, start_token, end_token))
         trigram_counter += Counter(count_n_grams([replaced_tokenized_sentence], 3, start_token, end_token))
 
-with gz.open(unigram_file, 'w') as f:
-    f.write(f"gram1,count\n".encode('UTF-8'))
-    for k, v in unigram_counter.items():
-        w1 = k[0]
-        f.write(f"{w1},{v}\n".encode('UTF-8'))
+# with gz.open(unigram_file, 'w') as f:
+#     f.write(f"gram1,count\n".encode('UTF-8'))
+#     for k, v in unigram_counter.items():
+#         w1 = k[0]
+#         f.write(f"{w1},{v}\n".encode('UTF-8'))
 
 with gz.open(bigram_file, 'w') as f:
     f.write(f"gram1,gram2,count\n".encode('UTF-8'))
