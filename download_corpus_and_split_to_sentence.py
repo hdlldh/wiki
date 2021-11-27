@@ -4,7 +4,7 @@ from utils import *
 
 ds = tfds.load('wikipedia/20201201.en', split='train', shuffle_files=True)
 
-output = "split_wiki_20201201.dat.gz"
+output = "wiki_sentences_20201201.dat.gz"
 count = 0
 with gz.open(output, "w") as f:
     for example in ds:

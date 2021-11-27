@@ -5,7 +5,7 @@ from collections import Counter
 
 date_str = "20201201"
 token_file = f"wiki_all_tokens_{date_str}.csv.gz"
-subject_file = f"split_wiki_{date_str}.dat.gz"
+subject_file = f"wiki_sentences_{date_str}.dat.gz"
 unigram_file = f"wiki_unigram_{date_str}.csv.gz"
 bigram_file = f"wiki_bigram_{date_str}.csv.gz"
 trigram_file = f"wiki_trigram_{date_str}.csv.gz"
